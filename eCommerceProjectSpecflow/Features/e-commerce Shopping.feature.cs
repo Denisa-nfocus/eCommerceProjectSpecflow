@@ -81,7 +81,7 @@ namespace eCommerceProjectSpecflow.Features
 #line 6
 #line hidden
 #line 7
-testRunner.Given("I have dismissed the notice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have logged in as a registered user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -123,7 +123,7 @@ this.FeatureBackground();
  testRunner.When("I apply a valid coupon \'edgewords\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.Then("the coupon takes off 15%", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the coupon takes off \'15\'%", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

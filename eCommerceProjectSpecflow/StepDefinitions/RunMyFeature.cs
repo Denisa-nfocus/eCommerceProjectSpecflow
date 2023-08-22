@@ -18,13 +18,17 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _driver = scenarioContext["my_driver"] as IWebDriver;
+            // _scenarioContext["my_driver"] = _driver; Hooks
         }
-        [Given(@"I have dismissed the notice")]
-        public void GivenIHaveDismissedTheNotice()
+        
+        [Given(@"I have logged in as a registered user")]
+        public void GivenIHaveLoggedInAsARegisteredUser()
         {
+            // Step 1: Log-in with valid credentials
             LoginPagePOM login = new(_driver);
-            login.Dismiss();
+            login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
         }
+
 
         [Given(@"I have added a '(.*)' to cart")]
         public void GivenIHaveAddedAToCart(string addItem)
@@ -32,8 +36,8 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             _driver.Url = Environment.GetEnvironmentVariable("URL");
 
             // Step 1: Log-in with valid credentials
-            LoginPagePOM login = new(_driver);
-            login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
+            // LoginPagePOM login = new(_driver);
+            //login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
 
             // Step 2: Enter the shop using top nav link ‘Shop’
             NavPOM nav = new(_driver);
@@ -55,7 +59,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             
         }
 
-        [Then(@"the coupon takes off (.*)%")]
+        [Then(@"the coupon takes off '(.*)'%")]
         public void ThenTheCouponTakesOff(int discountPercentage)
         {
             CartPagePOM cartPage = new(_driver);
@@ -85,8 +89,8 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             _driver.Url = Environment.GetEnvironmentVariable("URL");
 
             // Step 1: Log-in 
-            LoginPagePOM login = new(_driver);
-            login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_2"), Environment.GetEnvironmentVariable("PASSWORD_2"));
+            //LoginPagePOM login = new(_driver);
+            //login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_2"), Environment.GetEnvironmentVariable("PASSWORD_2"));
 
             // Step 2: Enter the shop using top nav link ‘Shop’
             NavPOM nav = new(_driver);

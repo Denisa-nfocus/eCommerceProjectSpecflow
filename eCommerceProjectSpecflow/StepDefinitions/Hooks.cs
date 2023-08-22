@@ -4,6 +4,7 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
+using uk.co.nfocus.denisa.ecommerce.POM_Pages;
 
 namespace eCommerceProjectSpecflow.StepDefinitions
 {
@@ -59,15 +60,26 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             // Navigate to the start page in [SetUp]
             _driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
 
+            // Dismiss Notice
+            LoginPagePOM login = new(_driver);
+            login.Dismiss();
         }
 
         [After]
         public void Teardown()
         {
-            // Logout
-            _logoutButton.Click();
-            //Close the web browser
-            _driver.Quit();
+            try
+            {
+                // Logout
+                _logoutButton.Click();
+                //Close the web browser
+                _driver.Quit();
+            }
+            catch
+            {
+                //Close the web browser
+                _driver.Quit();
+            }
         }
     }
 }
