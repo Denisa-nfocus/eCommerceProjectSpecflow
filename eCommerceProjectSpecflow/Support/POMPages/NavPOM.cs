@@ -17,7 +17,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         private IWebElement _shopNav => _driver.FindElement(By.LinkText("Shop"));
         private IWebElement _cartNav => _driver.FindElement(By.LinkText("Cart"));
         private IWebElement _checkoutNav => _driver.FindElement(By.LinkText("Checkout"));
-        private IWebElement _myAccountNav => WaitForElementThenReturn(_driver, By.LinkText("My account"));
+        private IWebElement _myAccountNav => WaitForElementThenReturn(_driver, By.LinkText("My account"), 10);
         private IWebElement _blogNav => _driver.FindElement(By.LinkText("Blog"));
 
         //Service Methods

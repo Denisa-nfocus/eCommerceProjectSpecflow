@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using System.Xml.Linq;
 using static eCommerceProjectSpecflow.StepDefinitions.StaticHelpers;
 
 namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
@@ -16,10 +18,9 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         //Locators
         private IWebElement _locateElement => _driver.FindElement(By.CssSelector($"[aria-label=\"Add “{item}” to your cart\"]"));
         private IWebElement _viewCartLink => WaitForElementThenReturn(_driver, By.CssSelector("[title='View cart']"));
-
-        //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).
-        //Until(drv => drv.FindElement(By.CssSelector("[title='View cart']")));
-
+        private string _cartTotalString => _driver.FindElement(By.CssSelector(".amount.woocommerce-Price-amount")).Text;
+        private IWebElement _cartTotal => _driver.FindElement(By.CssSelector(".amount.woocommerce-Price-amount"));
+        private IWebElement _removeFromCart => _driver.FindElement(By.CssSelector(".remove.remove_from_cart_button"));
 
         //Service Methods
         public void ItemToCart(string chosenItem)
@@ -31,6 +32,20 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         public void ViewCart()
         {
             _viewCartLink.Click();
+        }
+
+        // Check for items already in the cart.
+        public void CartTotal()
+        {
+            if (_cartTotalString != "£0.00")
+            {
+                // Move mouse to cart
+                Actions action = new Actions(_driver);
+                action.MoveToElement(_cartTotal).Perform();
+                // Remove item from cart
+                _removeFromCart.Click();
+            }
+
         }
     }
 }

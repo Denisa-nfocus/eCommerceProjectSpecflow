@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Diagnostics;
 using TechTalk.SpecFlow;
 using uk.co.nfocus.denisa.ecommerce.POM_Pages;
 using static eCommerceProjectSpecflow.StepDefinitions.Hooks;
@@ -24,6 +25,8 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         [Given(@"I have logged in as a registered user")]
         public void GivenIHaveLoggedInAsARegisteredUser()
         {
+            _driver.Url = Environment.GetEnvironmentVariable("URL");
+
             // Step 1: Log-in with valid credentials
             LoginPagePOM login = new(_driver);
             login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
@@ -33,18 +36,15 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         [Given(@"I have added a '(.*)' to cart")]
         public void GivenIHaveAddedAToCart(string addItem)
         {
-            _driver.Url = Environment.GetEnvironmentVariable("URL");
-
-            // Step 1: Log-in with valid credentials
-            // LoginPagePOM login = new(_driver);
-            //login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
-
             // Step 2: Enter the shop using top nav link ‘Shop’
             NavPOM nav = new(_driver);
             nav.Shop();
 
             // Step 3: Add 'Belt' to Cart, Step 4: View the Cart
             ShopPagePOM shopPage = new(_driver);
+            
+            // Ensure there are no items in the cart already
+            shopPage.CartTotal();
 
             shopPage.ItemToCart(addItem);
             shopPage.ViewCart();
@@ -64,14 +64,17 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         {
             CartPagePOM cartPage = new(_driver);
 
-            Assert.Multiple(() =>
-            {
-                // Step 6: Check that the coupon takes off 15%
-                Assert.That(cartPage.Discount(), Is.EqualTo(cartPage.ItemPrice() * discountPercentage / 100), $"Coupon doesn't take off {discountPercentage}%");
+            // Step 6: Check that the coupon takes off 15%
+            Assert.That(cartPage.Discount(), Is.EqualTo(cartPage.ItemPrice() * discountPercentage / 100), $"Coupon doesn't take off {discountPercentage}%");
+        }
 
-                // Step 7: Check that the total calculated after coupon & shipping is correct
-                Assert.That(cartPage.ItemPrice() - cartPage.Discount() + cartPage.Shipping(), Is.EqualTo(cartPage.TotalPrice()), "Total is incorrect");
-            });
+        [Then(@"the total is correct")]
+        public void ThenTheTotalIsCorrect()
+        {
+            CartPagePOM cartPage = new(_driver);
+
+            // Step 7: Check that the total calculated after coupon & shipping is correct
+            Assert.That(cartPage.ItemPrice() - cartPage.Discount() + cartPage.Shipping(), Is.EqualTo(cartPage.TotalPrice()), "Total is incorrect");
 
             // Clear Cart
             cartPage.ClearCart();
@@ -83,15 +86,9 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             // Step 8: Log Out - In TearDown()
         }
 
-        [Given(@"I have proceeded to checkout")]
+    [Given(@"I have proceeded to checkout")]
         public void GivenIHaveProceededToCheckout()
         {
-            _driver.Url = Environment.GetEnvironmentVariable("URL");
-
-            // Step 1: Log-in 
-            //LoginPagePOM login = new(_driver);
-            //login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_2"), Environment.GetEnvironmentVariable("PASSWORD_2"));
-
             // Step 2: Enter the shop using top nav link ‘Shop’
             NavPOM nav = new(_driver);
             nav.Shop();

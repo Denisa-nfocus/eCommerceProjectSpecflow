@@ -11,6 +11,7 @@ Scenario Outline: Applying a discount code to a clothing item
 	Given I have added a '<clothing item>' to cart 
 	When I apply a valid coupon 'edgewords'
 	Then the coupon takes off '15'%
+	And the total is correct
 
 	Examples: 
 	| clothing item      |

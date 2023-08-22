@@ -26,7 +26,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         private IWebElement _discount => WaitForElementThenReturn(_driver, By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount"), 10);
         private IWebElement _shipping => _driver.FindElement(By.CssSelector("#shipping_method > li > label > span > bdi"));
         private IWebElement _totalPrice => _driver.FindElement(By.CssSelector(".order-total > td bdi"));
-        private IWebElement _clearCart => _driver.FindElement(By.CssSelector(".remove"));
+        private IWebElement _clearCart => WaitForElementThenReturn(_driver, By.CssSelector(".remove"), 10);
         private IWebElement _checkoutButton => _driver.FindElement(By.CssSelector(".alt.button.checkout-button.wc-forward"));
 
         //Service Methods
@@ -52,7 +52,16 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
             Convert.ToDouble(_totalPrice.Text.Replace("£", ""));
         public void ClearCart()
         {
-            _clearCart.Click();
+            // Try to clear the cart. If an element exception occurs, catch it and try again.
+            try
+            {
+                _clearCart.Click();
+            }
+            catch
+            {
+                _clearCart.Click();
+            }
+
         }
         public void Checkout()
         {
