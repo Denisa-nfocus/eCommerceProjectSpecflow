@@ -19,7 +19,6 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _driver = scenarioContext["my_driver"] as IWebDriver;
-            // _scenarioContext["my_driver"] = _driver; Hooks
         }
         
         [Given(@"I have logged in as a registered user")]
