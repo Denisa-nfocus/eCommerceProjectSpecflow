@@ -143,6 +143,9 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             CheckoutPagePOM checkoutPage = new(_driver);
             OrdersPagePOM orderPage = new(_driver);
 
+            // Write the most recent order number to Console
+            Console.WriteLine("Most recent order number: " + checkoutPage.CheckoutOrder());
+
             Assert.That(checkoutPage.CheckoutOrder(), Is.EqualTo(orderPage.LatestOrder()), "The same order doesn't show in the account");
 
             // Step 11: Log Out - In TearDown()
