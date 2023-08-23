@@ -83,8 +83,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         public void Screenshot()
         {
             Screenshot orderSS = ((ITakesScreenshot)_formElm).GetScreenshot();
-            orderSS.SaveAsFile(@".\..\order_number",
-            ScreenshotImageFormat.Png);
+            orderSS.SaveAsFile(@".\..\order_number.png");
         }
         public void MyAccount()
         {

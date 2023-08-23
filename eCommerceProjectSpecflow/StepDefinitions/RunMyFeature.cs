@@ -126,7 +126,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             // Step 8: Place the order
             checkoutPage.PlaceOrder();
 
-            // Step 9: Capture the Order Number and write it to the 'results' folder
+            // Step 9: Capture the Order Number and save Screenshot 
             checkoutPage.Screenshot();
         }
 

@@ -123,7 +123,7 @@ this.FeatureBackground();
  testRunner.When("I apply a valid coupon \'edgewords\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.Then("the coupon takes off \'10\'%", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the coupon takes off \'15\'%", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
  testRunner.And("the total is correct", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
