@@ -12,7 +12,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 {
     internal class CartPagePOM
     {
-        private IWebDriver _driver; //Driver to work with
+        private readonly IWebDriver _driver; //Driver to work with
 
         public CartPagePOM(IWebDriver driver) //Get driver from test at instantiation time
         {
@@ -35,21 +35,21 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
             _couponCode.SendKeys(code);
             _submit.Click();
         }
-        public double ItemPrice() =>
+        public decimal ItemPrice() =>
             // Item Price
-            Convert.ToDouble(_itemPrice.Text.Replace("£", ""));
+            Convert.ToDecimal(_itemPrice.Text.Replace("£", ""));
 
-        public double Discount() =>
+        public decimal Discount() =>
             // Discount
-            Convert.ToDouble(_discount.Text.Replace("£", ""));
+            Convert.ToDecimal(_discount.Text.Replace("£", ""));
 
-        public double Shipping() =>
+        public decimal Shipping() =>
             // Shipping
-            Convert.ToDouble(_shipping.Text.Replace("£", ""));
+            Convert.ToDecimal(_shipping.Text.Replace("£", ""));
 
-        public double TotalPrice() =>
+        public decimal TotalPrice() =>
             // Total Price
-            Convert.ToDouble(_totalPrice.Text.Replace("£", ""));
+            Convert.ToDecimal(_totalPrice.Text.Replace("£", ""));
         public void ClearCart()
         {
             // Try to clear the cart. If an element exception occurs, catch it and try again.

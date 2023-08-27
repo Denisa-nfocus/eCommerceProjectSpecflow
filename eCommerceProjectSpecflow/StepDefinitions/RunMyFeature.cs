@@ -12,13 +12,11 @@ namespace eCommerceProjectSpecflow.StepDefinitions
     [Binding]
     public class StepDefinitions
     {
-        private readonly ScenarioContext _scenarioContext;
-        private IWebDriver _driver;
+        private readonly IWebDriver _driver;
 
         public StepDefinitions(ScenarioContext scenarioContext)
         {
-            _scenarioContext = scenarioContext;
-            _driver = scenarioContext["my_driver"] as IWebDriver;
+             _driver = (IWebDriver)scenarioContext["my_driver"];
         }
         
         [Given(@"I have logged in as a registered user")]
@@ -28,9 +26,12 @@ namespace eCommerceProjectSpecflow.StepDefinitions
 
             // Step 1: Log-in with valid credentials
             LoginPagePOM login = new(_driver);
-            login.LoginWithValidCredentials(Environment.GetEnvironmentVariable("USERNAME_1"), Environment.GetEnvironmentVariable("PASSWORD_1"));
+            // If username is null, throw an error "Username not set".
+            string username = Environment.GetEnvironmentVariable("USERNAME_1") ?? throw new Exception("Username not set.");
+            // If password is null, throw an error "Password not set".
+            string password = Environment.GetEnvironmentVariable("PASSWORD_1") ?? throw new Exception("Password not set.");
+            login.LoginWithValidCredentials(username, password);
         }
-
 
         [Given(@"I have added a '(.*)' to cart")]
         public void GivenIHaveAddedAToCart(string addItem)
@@ -107,12 +108,14 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         {
             // Step 6: Complete Billing details
             CheckoutPagePOM checkoutPage = new(_driver);
-            checkoutPage.FirstName(Environment.GetEnvironmentVariable("FIRST_NAME"));
-            checkoutPage.LastName(Environment.GetEnvironmentVariable("LAST_NAME"));
-            checkoutPage.Address(Environment.GetEnvironmentVariable("ADDRESS"));
-            checkoutPage.City(Environment.GetEnvironmentVariable("CITY"));
-            checkoutPage.Postcode(Environment.GetEnvironmentVariable("POSTCODE"));
-            checkoutPage.Phone(Environment.GetEnvironmentVariable("PHONE"));
+            checkoutPage.BillingDetails(
+                "Layla",
+                "Patel",
+                "42 Rupert St",
+                "London",
+                "W1D 6DP",
+                02072876333
+                );
 
             // Step 7: Select ‘Check payments’ as payment method
             checkoutPage.CheckButton();

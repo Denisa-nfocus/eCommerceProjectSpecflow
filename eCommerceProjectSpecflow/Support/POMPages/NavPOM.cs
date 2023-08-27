@@ -5,7 +5,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 {
     internal class NavPOM
     {
-        private IWebDriver _driver; //Driver to work with
+        private readonly IWebDriver _driver; //Driver to work with
 
         public NavPOM(IWebDriver driver) //Get driver from test at instantiation time
         {

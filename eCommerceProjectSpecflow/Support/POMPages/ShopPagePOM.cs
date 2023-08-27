@@ -7,7 +7,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 {
     internal class ShopPagePOM
     {
-        private IWebDriver _driver; //Driver to work with
+        private readonly IWebDriver _driver; //Driver to work with
         private string? item;
 
         public ShopPagePOM(IWebDriver driver) //Get driver from test at instantiation time
@@ -40,7 +40,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
             if (_cartTotalString != "£0.00")
             {
                 // Move mouse to cart
-                Actions action = new Actions(_driver);
+                Actions action = new(_driver);
                 action.MoveToElement(_cartTotal).Perform();
                 // Remove item from cart
                 _removeFromCart.Click();

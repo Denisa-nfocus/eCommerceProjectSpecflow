@@ -5,7 +5,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 {
     internal class CheckoutPagePOM
     {
-        private IWebDriver _driver; //Driver to work with
+        private readonly IWebDriver _driver; //Driver to work with
 
         public CheckoutPagePOM(IWebDriver driver) //Get driver from test at instantiation time
         {
@@ -26,37 +26,23 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         private IWebElement _accountButton => _driver.FindElement(By.LinkText("My account"));
 
         //Service Methods
-        public void FirstName(string first_name)
+        public void BillingDetails(string first_name, string last_name, string address, string city, string postcode, int phone_number) 
         {
             _firstName.Clear();
-            _firstName.SendKeys(first_name);
-        }
-        public void LastName(string last_name)
-        {
             _lastName.Clear();
-            _lastName.SendKeys(last_name);
-        }
-        public void Address(string address)
-        {
             _address.Clear();
-            _address.SendKeys(address);
-        }
-        public void City(string city)
-        {
             _city.Clear();
-            _city.SendKeys(city);
-        }
-        public void Postcode(string postcode)
-        {
             _postcode.Clear();
-            _postcode.SendKeys(postcode);
-        }
-        public void Phone(string phone_number)
-        {
             _phone.Clear();
-            _phone.SendKeys(phone_number);
-        }
 
+            _firstName.SendKeys(first_name);
+            _lastName.SendKeys(last_name);
+            _address.SendKeys(address);
+            _city.SendKeys(city);
+            _postcode.SendKeys(postcode);
+            _phone.SendKeys(phone_number.ToString());
+
+        }
         public void CheckButton()
         {
             _checkButton.Click();

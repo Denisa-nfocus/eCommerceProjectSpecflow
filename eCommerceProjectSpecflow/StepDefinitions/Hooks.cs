@@ -17,7 +17,10 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         // Locators
         private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Hooks(ScenarioContext scenarioContext)
+
+        //driver not set inside the contructor, this always throws a warning.
         {
             _scenarioContext = scenarioContext;
         }
@@ -26,7 +29,9 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         public void SetUp()
         {
 
-            string Browser = Environment.GetEnvironmentVariable("BROWSER");
+            string Browser = Environment.GetEnvironmentVariable("BROWSER")
+            ?? throw new Exception("Environement variable not set.");
+                //if the first thing is null, set to chrome
 
             switch (Browser)
             {
@@ -43,7 +48,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
                     _driver = new InternetExplorerDriver();
                     break;
                 case "remotechrome":
-                    ChromeOptions options = new ChromeOptions();
+                    ChromeOptions options = new ();
                     _driver = new RemoteWebDriver(new Uri("http://172.30.190.244:4444/wd/hub"), options);
                     break;
                 default:

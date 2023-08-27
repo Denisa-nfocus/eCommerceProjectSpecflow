@@ -4,7 +4,7 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 {
     internal class MyAccountPagePOM
     {
-        private IWebDriver _driver; //Driver to work with
+        private readonly IWebDriver _driver; //Driver to work with
 
         public MyAccountPagePOM(IWebDriver driver) //Get driver from test at instantiation time
         {
