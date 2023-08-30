@@ -135,11 +135,20 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Completing the checkout process")]
         [NUnit.Framework.CategoryAttribute("CaptureOrder")]
-        public void CompletingTheCheckoutProcess()
+        [NUnit.Framework.TestCaseAttribute("Beanie", null)]
+        [NUnit.Framework.TestCaseAttribute("Tshirt", null)]
+        [NUnit.Framework.TestCaseAttribute("Cap", null)]
+        public void CompletingTheCheckoutProcess(string clothingItem, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "CaptureOrder"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("clothing item", clothingItem);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Completing the checkout process", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 23
 this.ScenarioInitialize(scenarioInfo);
@@ -155,15 +164,50 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 24
- testRunner.Given("I have proceeded to checkout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have added a \'{0}\' to cart", clothingItem), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 25
- testRunner.And("I provide the billing details", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have proceeded to checkout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "ID",
+                            "first name",
+                            "last name",
+                            "address",
+                            "city",
+                            "postcode",
+                            "phone number"});
+                table1.AddRow(new string[] {
+                            "001",
+                            "Layla",
+                            "Patel",
+                            "42 Rupert St",
+                            "London",
+                            "W1D 6DP",
+                            "02072876333"});
+                table1.AddRow(new string[] {
+                            "002",
+                            "Tyler",
+                            "Morgan",
+                            "5 Wood Crescent",
+                            "Garyborough",
+                            "NP44 4PE",
+                            "06322 569665"});
+                table1.AddRow(new string[] {
+                            "003",
+                            "Kieran",
+                            "Richards",
+                            "60 Naomi Park",
+                            "Oliverview",
+                            "HP19 9BW",
+                            "03148 595925"});
 #line 26
+ testRunner.And("I provide the billing details with id: \'002\'", ((string)(null)), table1, "And ");
+#line hidden
+#line 31
  testRunner.When("I place an order", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 32
  testRunner.Then("that same order is displayed in my account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

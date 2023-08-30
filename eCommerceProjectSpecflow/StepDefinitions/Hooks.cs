@@ -1,10 +1,14 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework.Interfaces;
+using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using uk.co.nfocus.denisa.ecommerce.POM_Pages;
+using static eCommerceProjectSpecflow.Support.StaticHelpers;
+using System.Drawing;
 
 namespace eCommerceProjectSpecflow.StepDefinitions
 {
@@ -20,18 +24,16 @@ namespace eCommerceProjectSpecflow.StepDefinitions
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Hooks(ScenarioContext scenarioContext)
 
-        //driver not set inside the contructor, this always throws a warning.
+        // 'driver' not set inside the contructor. This always throws a warning.
         {
             _scenarioContext = scenarioContext;
         }
 
-        [Before]
+        [BeforeScenario]
         public void SetUp()
         {
-
-            string Browser = Environment.GetEnvironmentVariable("BROWSER")
-            ?? throw new Exception("Environement variable not set.");
-                //if the first thing is null, set to chrome
+            // If environment variable BROWSER can't be found and referenced, throw an error "Environement variable not set.".
+            string Browser = Environment.GetEnvironmentVariable("BROWSER") ?? throw new Exception("Environement variable not set.");
 
             switch (Browser)
             {
@@ -52,15 +54,16 @@ namespace eCommerceProjectSpecflow.StepDefinitions
                     _driver = new RemoteWebDriver(new Uri("http://172.30.190.244:4444/wd/hub"), options);
                     break;
                 default:
-                    Console.WriteLine("No browser set - launching chrome");
+                    // If BROWSER is null or invalid, launch chrome by default.
+                    Console.WriteLine("No valid browser set - launching chrome");
                     _driver = new ChromeDriver();
                     break;
             };
 
-            _scenarioContext["my_driver"] = _driver; 
+            _scenarioContext["my_driver"] = _driver;
 
-            // Browser friendly
-            _driver.Manage().Window.Maximize();
+            // Browser set to 1520x900
+            _driver.Manage().Window.Size = new Size(1520, 900);
 
             // Navigate to the start page in [SetUp]
             _driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
@@ -68,9 +71,28 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             // Dismiss Notice
             LoginPagePOM login = new(_driver);
             login.Dismiss();
+
         }
 
-        [After]
+        [AfterStep]
+        public void ErrorScreenshot()
+        {
+            var testStatus = TestContext.CurrentContext.Result.Outcome.Status;
+            string failedScenario = _scenarioContext.ScenarioInfo.Title;
+            string failedStep = _scenarioContext.StepContext.StepInfo.Text;
+            if (testStatus == TestStatus.Failed)
+            {
+                // Screenshot of the failed BDD step
+                // The file name has been reduced to prevent corruption of the screenshot
+                Screenshot(_driver, failedStep.Substring(0, 25) + "...");
+
+                // Failed Scenario and Failed BDD step written to Console
+                Console.WriteLine($"Failed Scenario: \"{failedScenario}\"");
+                Console.WriteLine($"Failed Step: \"{failedStep}\"");
+            }
+        }
+
+        [AfterScenario]
         public void Teardown()
         {
             try
