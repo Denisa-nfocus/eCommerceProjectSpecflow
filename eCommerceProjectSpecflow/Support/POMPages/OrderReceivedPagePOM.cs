@@ -23,9 +23,10 @@ namespace eCommerceProjectSpecflow.Support.POMPages
         }
 
         // Take a screenshot of the order confirmation
-        public void OrderConfirmation()
+        public void ScreenshotOfOrderConfirmation()
         {
             Screenshot(_driver, "Order " + _orderNumber.ToString() + " Confirmation");
+            Console.WriteLine("A screenshot of order " + _orderNumber.ToString() + " has been taken");
         }
     }
 }

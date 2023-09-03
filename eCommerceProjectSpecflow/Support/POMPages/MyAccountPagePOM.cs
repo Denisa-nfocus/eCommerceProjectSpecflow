@@ -14,11 +14,16 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
 
         // Locators
         private IWebElement _ordersButton => WaitForElementThenReturn(_driver, By.LinkText("Orders"));
+        private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));
 
         // Service Methods
         public void Orders()
         {
             _ordersButton.Click();
+        }
+        public void Logout()
+        {
+            _logoutButton.Click();
         }
     }
 }

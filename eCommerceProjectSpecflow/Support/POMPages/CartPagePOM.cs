@@ -23,15 +23,15 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
         // Locators
         private IWebElement _couponCode => WaitForElementThenReturn(_driver, By.Id("coupon_code"));
         private IWebElement _submit => _driver.FindElement(By.CssSelector("button[name='apply_coupon']"));
-        private IWebElement _itemPrice => _driver.FindElement(By.CssSelector(".cart-subtotal bdi"));
+        private IWebElement _subTotal => _driver.FindElement(By.CssSelector(".cart-subtotal bdi"));
         private IWebElement _discount => WaitForElementThenReturn(_driver, By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount"), 10);
         private IWebElement _shipping => _driver.FindElement(By.CssSelector("#shipping_method > li > label > span > bdi"));
         private IWebElement _totalPrice => _driver.FindElement(By.CssSelector(".order-total > td bdi"));
         private IWebElement _clearFromCart => WaitForElementThenReturn(_driver, By.CssSelector(".remove"), 7);
+        private string _cartTotalString => _driver.FindElement(By.CssSelector(".amount.woocommerce-Price-amount")).Text;
         ReadOnlyCollection<IWebElement> _removeButtonsCart => _driver.FindElements(By.CssSelector(".remove"));
-
-
         private IWebElement _checkoutButton => _driver.FindElement(By.CssSelector(".alt.button.checkout-button.wc-forward"));
+        private IWebElement _basket => _driver.FindElement(By.CssSelector("[title='View your shopping cart']"));
 
         // Service Methods
         public void ApplyCoupon(string code)
@@ -39,9 +39,9 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
             _couponCode.SendKeys(code);
             _submit.Click();
         }
-        public decimal ItemPrice() =>
+        public decimal SubTotal() =>
             // Item Price
-            Convert.ToDecimal(_itemPrice.Text.Replace("£", ""));
+            Convert.ToDecimal(_subTotal.Text.Replace("£", ""));
 
         public decimal Discount() =>
             // Discount
@@ -55,6 +55,17 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
             // Total Price
             Convert.ToDecimal(_totalPrice.Text.Replace("£", ""));
 
+        public bool ItemsInCart()
+        {
+            if(_cartTotalString != "£0.00")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         // Empty Cart
         public void ClearCart()
         {
@@ -66,14 +77,19 @@ namespace uk.co.nfocus.denisa.ecommerce.POM_Pages
                 // Try to clear the cart. If an element exception occurs, catch it and try again.
                 try
                 {
-                    // Remove item from cart
+                    // Clear the cart
                     _clearFromCart.Click();
-                    // Reduce removeButtonCount by -1
+                    // The number of remove buttons has been reduced
                     removeButtonCount -= 1;
                 }
                 catch
                 {
+                    // Loads the cart from the top of the page.
+                    // Prevents a 'miss' due to scrolling.
+                    _basket.Click();
+                    // Clear the cart
                     _clearFromCart.Click();
+                    // The number of remove buttons has been reduced
                     removeButtonCount -= 1;
                 }
             }

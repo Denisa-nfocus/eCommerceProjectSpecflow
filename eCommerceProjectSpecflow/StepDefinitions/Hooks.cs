@@ -18,9 +18,6 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         private IWebDriver _driver;
         private readonly ScenarioContext _scenarioContext;
 
-        // Locators
-        private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));
-
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Hooks(ScenarioContext scenarioContext)
 
@@ -32,8 +29,8 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         [BeforeScenario]
         public void SetUp()
         {
-            // If environment variable BROWSER can't be found and referenced, throw an error "Environement variable not set.".
-            string Browser = Environment.GetEnvironmentVariable("BROWSER") ?? throw new Exception("Environement variable not set.");
+            // If environment variable BROWSER can't be found and referenced, throw an error "BROWSER environment variable not set.".
+            string Browser = Environment.GetEnvironmentVariable("BROWSER") ?? throw new Exception("BROWSER environment variable not set.");
 
             switch (Browser)
             {
@@ -63,10 +60,10 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             _scenarioContext["my_driver"] = _driver;
 
             // Browser set to 1520x900
-            _driver.Manage().Window.Size = new Size(1520, 900);
+            _driver.Manage().Window.Size = new Size(1520, 980);
 
             // Navigate to the start page in [SetUp]
-            _driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
+            _driver.Url = Environment.GetEnvironmentVariable("BASE_URL") ?? throw new Exception("BASE_URL not set.");
 
             // Dismiss Notice
             LoginPagePOM login = new(_driver);
@@ -97,8 +94,14 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         {
             try
             {
+                // Navigate to myAccount
+                NavPOM nav = new(_driver);
+                nav.MyAccount();
+
                 // Logout
-                _logoutButton.Click();
+                MyAccountPagePOM myAccount = new(_driver);
+                myAccount.Logout();
+
                 //Close the web browser
                 _driver.Quit();
             }

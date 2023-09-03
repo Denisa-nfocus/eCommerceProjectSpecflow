@@ -1,8 +1,6 @@
 ﻿using eCommerceProjectSpecflow.Support.POMPages;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Org.BouncyCastle.Asn1.X509;
-using System.Text.RegularExpressions;
 using uk.co.nfocus.denisa.ecommerce.POM_Pages;
 
 namespace eCommerceProjectSpecflow.StepDefinitions
@@ -35,6 +33,21 @@ namespace eCommerceProjectSpecflow.StepDefinitions
 
         }
 
+        [Given(@"I have cleared the cart")]
+        public void GivenIHaveClearedTheCart()
+        {
+            NavPOM nav = new(_driver);
+            CartPagePOM cartPage = new(_driver);
+
+            // If there are items in the cart, remove them.
+            if (cartPage.ItemsInCart() == true)
+            {
+                nav.Cart();
+                cartPage.ClearCart();
+            }
+        }
+
+
         [Given(@"I have added a '(.*)' to cart")]
         public void GivenIHaveAddedAToCart(string addItem)
         {
@@ -44,10 +57,6 @@ namespace eCommerceProjectSpecflow.StepDefinitions
 
             // Step 3: Add 'Belt' to Cart, Step 4: View the Cart
             ShopPagePOM shopPage = new(_driver);
-            
-            // Ensure there are no items in the cart already
-            nav.EmptyCart();
-
             shopPage.ItemToCart(addItem);
             shopPage.ViewCart();
         }
@@ -67,7 +76,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             CartPagePOM cartPage = new(_driver);
 
             // Step 6: Check that the coupon takes off 15%
-            Assert.That(cartPage.Discount(), Is.EqualTo(cartPage.ItemPrice() * discountPercentage / 100), $"Coupon doesn't take off {discountPercentage}% It takes off {(int)(cartPage.Discount() / cartPage.ItemPrice() * 100)}%");
+            Assert.That(cartPage.Discount(), Is.EqualTo(cartPage.SubTotal() * discountPercentage / 100), $"Coupon doesn't take off {discountPercentage}% It takes off {(int)(cartPage.Discount() / cartPage.SubTotal() * 100)}%");
         }
 
         [Then(@"the total is correct")]
@@ -76,14 +85,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             CartPagePOM cartPage = new(_driver);
 
             // Step 7: Check that the total calculated after coupon & shipping is correct
-            Assert.That(cartPage.ItemPrice() - cartPage.Discount() + cartPage.Shipping(), Is.EqualTo(cartPage.TotalPrice()), "Total is incorrect");
-
-            // Clear Cart
-            cartPage.ClearCart();
-
-            // Navigate to 'My account'
-            NavPOM nav = new(_driver);
-            nav.MyAccount();
+            Assert.That(cartPage.SubTotal() - cartPage.Discount() + cartPage.Shipping(), Is.EqualTo(cartPage.TotalPrice()), "Total is incorrect");
 
             // Step 8: Log Out - In TearDown()
 
@@ -100,46 +102,20 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             cartPage.Checkout();
         }
 
-        [Given(@"I provide the billing details with id: '([^']*)'")]
-        public void GivenIProvideTheBillingDetailsWithId(string iD, Table table)
-        {
-            
+        [Given(@"I provide the billing details")]
+        public void GivenIProvideTheBillingDetails(Table table)
+        {            
             // Step 6: Complete Billing details
             CheckoutPagePOM checkoutPage = new(_driver);
-
-            // Count the number of rows in the table
-            for (int i = 0; i < table.Rows.Count; i++)
-            {
-                Boolean foundID = false;
-                foreach (var row in table.Rows)
-                {
-                    // For each row, check if the parameter 'iD' is equal to any ID's found in the table.
-                    if (row["ID"] == iD)
-                    {
-                        // Match found. Retrieve billing details linked to this ID.
-                        checkoutPage.BillingDetails(
-                            row["first name"],
-                            row["last name"],
-                            row["address"],
-                            row["city"],
-                            row["postcode"],
-                            row["phone number"]
-                            );
-                      
-                        foundID = true;
-                    }
-                    // ID's are unique. If an ID is found, the search is over.
-                    if (foundID == true)
-                    {
-                        break;
-                    }
-                } 
-                // If the foundID == false, then the parameter entered does not equal to any ID in the table. As such, Fail the test.
-                if(foundID == false) {
-                    Assert.Fail($"ID {iD} could not be found");
-                }
-            }
-
+            checkoutPage.BillingDetails(
+                table.Rows[0]["first name"],
+                table.Rows[0]["last name"],
+                table.Rows[0]["address"],
+                table.Rows[0]["city"],
+                table.Rows[0]["postcode"],
+                table.Rows[0]["phone number"]
+                );
+          
             // Step 7: Select ‘Check payments’ as payment method
             checkoutPage.CheckButton();
         }
@@ -155,9 +131,10 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             // Step 9: Capture the order number from the order confirmation page
             OrderReceivedPagePOM orderReceivedPage = new(_driver);
             _scenarioContext["confirmation_order_number"] = orderReceivedPage.OrderNumber();
+            Console.WriteLine("Order " + (string)_scenarioContext["confirmation_order_number"] + " has been captured");
 
             // Take a Screenshot of the Confirmation page
-            orderReceivedPage.OrderConfirmation();
+            orderReceivedPage.ScreenshotOfOrderConfirmation();
         }
 
         [Then(@"that same order is displayed in my account")]

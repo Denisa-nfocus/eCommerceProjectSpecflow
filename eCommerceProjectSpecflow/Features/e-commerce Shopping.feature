@@ -5,6 +5,7 @@ To shop on the e-commerce site, the registered users want to make purchases, app
 
 Background: 
 Given I have logged in as a registered user
+And I have cleared the cart
 
 @DiscountOrder
 Scenario Outline: Applying a discount code to a clothing item
@@ -21,18 +22,10 @@ Scenario Outline: Applying a discount code to a clothing item
 
 @CaptureOrder
 Scenario: Completing the checkout process
-    Given I have added a '<clothing item>' to cart
+    Given I have added a 'Beanie' to cart
 	And I have proceeded to checkout
-	And I provide the billing details with id: '002'
-	| ID  | first name | last name | address         | city        | postcode | phone number |
-	| 001 | Layla      | Patel     | 42 Rupert St    | London      | W1D 6DP  | 02072876333  |
-	| 002 | Tyler      | Morgan    | 5 Wood Crescent | Garyborough | NP44 4PE | 06322 569665 |
-	| 003 | Kieran     | Richards  | 60 Naomi Park   | Oliverview  | HP19 9BW | 03148 595925 |
+	And I provide the billing details
+	| first name | last name | address         | city        | postcode | phone number |
+	| Layla      | Patel     | 42 Rupert St    | London      | W1D 6DP  | 02072876333  |
 	When I place an order
 	Then that same order is displayed in my account
-	
-	Examples: 
-	| clothing item      |
-	| Beanie             |
-	| Tshirt             |
-	| Cap                |

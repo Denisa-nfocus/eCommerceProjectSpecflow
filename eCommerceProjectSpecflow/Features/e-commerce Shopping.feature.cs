@@ -83,6 +83,9 @@ namespace eCommerceProjectSpecflow.Features
 #line 7
 testRunner.Given("I have logged in as a registered user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 8
+testRunner.And("I have cleared the cart", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
@@ -103,7 +106,7 @@ testRunner.Given("I have logged in as a registered user", ((string)(null)), ((Te
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("clothing item", clothingItem);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Applying a discount code to a clothing item", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,16 +119,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 11
+#line 12
  testRunner.Given(string.Format("I have added a \'{0}\' to cart", clothingItem), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 13
  testRunner.When("I apply a valid coupon \'edgewords\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 14
  testRunner.Then("the coupon takes off \'15\'%", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
+#line 15
  testRunner.And("the total is correct", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -135,22 +138,13 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Completing the checkout process")]
         [NUnit.Framework.CategoryAttribute("CaptureOrder")]
-        [NUnit.Framework.TestCaseAttribute("Beanie", null)]
-        [NUnit.Framework.TestCaseAttribute("Tshirt", null)]
-        [NUnit.Framework.TestCaseAttribute("Cap", null)]
-        public void CompletingTheCheckoutProcess(string clothingItem, string[] exampleTags)
+        public void CompletingTheCheckoutProcess()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "CaptureOrder"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("clothing item", clothingItem);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Completing the checkout process", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -163,14 +157,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 24
-    testRunner.Given(string.Format("I have added a \'{0}\' to cart", clothingItem), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 25
+    testRunner.Given("I have added a \'Beanie\' to cart", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
  testRunner.And("I have proceeded to checkout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                            "ID",
                             "first name",
                             "last name",
                             "address",
@@ -178,36 +171,19 @@ this.FeatureBackground();
                             "postcode",
                             "phone number"});
                 table1.AddRow(new string[] {
-                            "001",
                             "Layla",
                             "Patel",
                             "42 Rupert St",
                             "London",
                             "W1D 6DP",
                             "02072876333"});
-                table1.AddRow(new string[] {
-                            "002",
-                            "Tyler",
-                            "Morgan",
-                            "5 Wood Crescent",
-                            "Garyborough",
-                            "NP44 4PE",
-                            "06322 569665"});
-                table1.AddRow(new string[] {
-                            "003",
-                            "Kieran",
-                            "Richards",
-                            "60 Naomi Park",
-                            "Oliverview",
-                            "HP19 9BW",
-                            "03148 595925"});
-#line 26
- testRunner.And("I provide the billing details with id: \'002\'", ((string)(null)), table1, "And ");
+#line 27
+ testRunner.And("I provide the billing details", ((string)(null)), table1, "And ");
 #line hidden
-#line 31
+#line 30
  testRunner.When("I place an order", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 31
  testRunner.Then("that same order is displayed in my account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
