@@ -60,7 +60,7 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             _scenarioContext["my_driver"] = _driver;
 
             // Browser set to 1520x900
-            _driver.Manage().Window.Size = new Size(1520, 980);
+            _driver.Manage().Window.Size = new Size(1520, 900);
 
             // Navigate to the start page in [SetUp]
             _driver.Url = Environment.GetEnvironmentVariable("BASE_URL") ?? throw new Exception("BASE_URL not set.");
