@@ -29,8 +29,10 @@ namespace eCommerceProjectSpecflow.StepDefinitions
         [BeforeScenario]
         public void SetUp()
         {
-            // If environment variable BROWSER can't be found and referenced, throw an error "BROWSER environment variable not set.".
-            string Browser = Environment.GetEnvironmentVariable("BROWSER") ?? throw new Exception("BROWSER environment variable not set.");
+            /* If environment variable BROWSER can't be found and referenced,
+            throw an error "BROWSER environment variable not set.". */
+            string Browser = Environment.GetEnvironmentVariable("BROWSER") ?? 
+                throw new Exception("BROWSER environment variable not set.");
 
             switch (Browser)
             {

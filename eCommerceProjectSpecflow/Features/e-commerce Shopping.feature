@@ -1,7 +1,8 @@
 ﻿@RunMe
 Feature: e-commerce Shopping
 
-To shop on the e-commerce site, the registered users want to make purchases, apply valid discount codes and go through the checkout process.
+To shop on the e-commerce site, the registered users want to make purchases, apply valid discount codes
+and go through the checkout process.
 
 Background: 
 Given I have logged in as a registered user

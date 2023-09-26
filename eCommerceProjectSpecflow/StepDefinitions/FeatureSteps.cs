@@ -76,7 +76,11 @@ namespace eCommerceProjectSpecflow.StepDefinitions
             CartPagePOM cartPage = new(_driver);
 
             // Step 6: Check that the coupon takes off 15%
-            Assert.That(cartPage.Discount(), Is.EqualTo(cartPage.SubTotal() * discountPercentage / 100), $"Coupon doesn't take off {discountPercentage}% It takes off {(int)(cartPage.Discount() / cartPage.SubTotal() * 100)}%");
+            var DisplayedDiscount = cartPage.Discount();
+            var ActualDiscount = (int)(cartPage.Discount() / cartPage.SubTotal() * 100);
+            var ExpectedDiscount = cartPage.SubTotal() * discountPercentage / 100;
+
+            Assert.That(DisplayedDiscount, Is.EqualTo(ExpectedDiscount), $"Coupon doesn't take off {discountPercentage}% It takes off {ActualDiscount}%");
         }
 
         [Then(@"the total is correct")]
