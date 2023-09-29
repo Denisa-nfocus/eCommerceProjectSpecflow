@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    This project is made up of two end-to-end tests that use SpecFlow and WebDriver.
+    This project is made up of two end-to-end tests that use SpecFlow and BDD.
   </head>
   <body>
     <main>
